@@ -97,7 +97,10 @@ class AppConfig:
     # Configurações de servidor
     HOST = "0.0.0.0"
     PORT = int(os.environ.get("PORT", 8000))  # Suporta variável de ambiente para deploy
-    DEBUG = True
+    DEBUG = os.environ.get("DEBUG", "true").lower() == "true"
+
+    # Modo de dados (para deploy em nuvem sem Access)
+    USE_MOCK_DATA = os.environ.get("USE_MOCK_DATA", "false").lower() == "true"
 
     # Configurações de UI
     THEME_COLORS = {
