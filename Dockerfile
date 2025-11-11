@@ -4,12 +4,11 @@ FROM python:3.11-slim
 # Definir diretório de trabalho
 WORKDIR /app
 
-# Instalar dependências do sistema para pyodbc (MS Access)
+# Instalar dependências do sistema
+# Nota: MS Access não funciona em Linux, mas mantemos deps básicas
 RUN apt-get update && apt-get install -y \
     unixodbc \
     unixodbc-dev \
-    odbcinst \
-    odbcinst1debian2 \
     libpq-dev \
     gcc \
     g++ \
