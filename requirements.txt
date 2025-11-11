@@ -1,0 +1,21 @@
+# Core Framework
+reactpy>=1.0.0
+reactpy[fastapi]>=1.0.0
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+
+# Data Processing
+pandas>=2.1.0
+numpy>=1.24.0
+
+# Database
+pyodbc>=5.0.0
+
+# Visualization
+plotly>=5.17.0
+
+# Excel
+openpyxl>=3.1.0
+
+# Utilities
+python-dotenv>=1.0.0

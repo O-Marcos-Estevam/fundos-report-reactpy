@@ -1,0 +1,11 @@
+services:
+  reactpy-app:
+    build: .
+    container_name: fundos-report-reactpy
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
