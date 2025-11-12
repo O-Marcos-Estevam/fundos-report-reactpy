@@ -48,9 +48,8 @@ MODULOS_RELATORIO: Dict[str, ModuloConfig] = {
         nome_arquivo='Relatório_Fundos_V6_Optimized.py',
         nome_classe='ReportDiarioFundosV6',
         nomes_possiveis=[
-            "Relatório_Fundos_V6_Optimized",
-            "relatorio_fundos_v6_optimized",
-            "RelatórioFundosV6Optimized",
+            "modules.v6.Relatório_Fundos_V6_Optimized",
+            "modules.v6.relatorio_fundos_v6_optimized",
         ],
         descricao='V6 Optimized - Performance 70% mais rápida, análise preditiva'
     ),
@@ -59,9 +58,8 @@ MODULOS_RELATORIO: Dict[str, ModuloConfig] = {
         nome_arquivo='Relatório_Fundos_V5_Enhanced.py',
         nome_classe='ReportDiarioFundosV5',
         nomes_possiveis=[
-            "Relatório_Fundos_V5_Enhanced",
-            "relatorio_fundos_v5_enhanced",
-            "RelatórioFundosV5Enhanced",
+            "modules.v5.Relatório_Fundos_V5_Enhanced",
+            "modules.v5.relatorio_fundos_v5_enhanced",
         ],
         descricao='V5 Enhanced - Relatório com 3 abas e formatação avançada'
     ),
@@ -70,11 +68,8 @@ MODULOS_RELATORIO: Dict[str, ModuloConfig] = {
         nome_arquivo='Relatório_Fundos_V4.py',
         nome_classe='ReportDiarioFundosV4',
         nomes_possiveis=[
-            "Relatório_Fundos_V4",
-            "relatorio_fundos_v4",
-            "RelatórioFundosV4",
-            "report_diario_v4",
-            "relatorio_v4"
+            "modules.v4.Relatório_Fundos_V4",
+            "modules.v4.relatorio_fundos_v4"
         ],
         descricao='V4 Legacy - Versão anterior para compatibilidade'
     )
