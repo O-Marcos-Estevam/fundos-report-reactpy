@@ -63,3 +63,11 @@ desktop.ini
 
 # Historico (pode conter dados sensíveis)
 data/historico.json
+
+# Documentação local (não necessária no deploy)
+docs/
+scripts/
+
+# Arquivos temporários
+*.tmp
+*.bak
