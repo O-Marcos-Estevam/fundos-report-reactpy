@@ -4,17 +4,49 @@ Gerencia caminhos, constantes e configurações do sistema
 """
 
 import os
+import sys
 from pathlib import Path
 from typing import Dict, Any
 from dataclasses import dataclass
+
+# ============================================================================
+# DETECÇÃO DE AMBIENTE
+# ============================================================================
+
+def is_cloud_environment() -> bool:
+    """Detecta se está rodando em ambiente cloud (Railway, Render, etc)"""
+    cloud_indicators = [
+        'RAILWAY_ENVIRONMENT',
+        'RENDER',
+        'HEROKU',
+        'DYNO',
+        'FLY_APP_NAME'
+    ]
+    return any(os.getenv(indicator) for indicator in cloud_indicators)
+
+def is_windows() -> bool:
+    """Detecta se está rodando no Windows"""
+    return sys.platform == 'win32'
 
 # ============================================================================
 # CAMINHOS BASE
 # ============================================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-CAMINHO_MODULO = r"C:\bloko\Fundos - Documentos\00. Monitoramento\01. Rotinas\0. Python"
-DB_PATH = r"C:\bloko\Fundos - Documentos\00. Monitoramento\01. Rotinas\03. Arquivos Rotina\09. Base_de_Dados\Base Fundos_V2.accdb"
+
+# Paths condicionais baseados no ambiente
+if is_cloud_environment():
+    # Ambiente cloud - sem Access
+    CAMINHO_MODULO = None
+    DB_PATH = None
+elif is_windows():
+    # Windows local - com Access
+    CAMINHO_MODULO = r"C:\bloko\Fundos - Documentos\00. Monitoramento\01. Rotinas\0. Python"
+    DB_PATH = r"C:\bloko\Fundos - Documentos\00. Monitoramento\01. Rotinas\03. Arquivos Rotina\09. Base_de_Dados\Base Fundos_V2.accdb"
+else:
+    # Linux local - sem Access
+    CAMINHO_MODULO = None
+    DB_PATH = None
 
 # Diretórios da aplicação
 DATA_DIR = BASE_DIR / "data"
@@ -86,7 +118,7 @@ class AppConfig:
 
     # Informações da aplicação
     APP_TITLE = "Relatório Diário de Fundos"
-    APP_VERSION = "7.0"
+    APP_VERSION = "7.1"
     APP_SUBTITLE = "Sistema Modular com ReactPy"
 
     # Configurações de servidor
@@ -94,8 +126,19 @@ class AppConfig:
     PORT = int(os.environ.get("PORT", 8000))  # Suporta variável de ambiente para deploy
     DEBUG = os.environ.get("DEBUG", "true").lower() == "true"
 
+    # Detecção de ambiente
+    IS_CLOUD = is_cloud_environment()
+    IS_WINDOWS = is_windows()
+    HAS_ACCESS = IS_WINDOWS and DB_PATH is not None and Path(DB_PATH).exists() if DB_PATH else False
+
     # Modo de dados (para deploy em nuvem sem Access)
-    USE_MOCK_DATA = os.environ.get("USE_MOCK_DATA", "false").lower() == "true"
+    USE_MOCK_DATA = os.environ.get("USE_MOCK_DATA", str(IS_CLOUD).lower()).lower() == "true"
+
+    # Mensagem de aviso para ambientes sem Access
+    ACCESS_WARNING = None if HAS_ACCESS else (
+        "⚠️ Executação de relatórios desabilitada - Microsoft Access não disponível neste ambiente. "
+        "Visualize apenas dados de exemplo."
+    )
 
     # Configurações de UI
     THEME_COLORS = {
