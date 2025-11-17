@@ -1,0 +1,653 @@
+/**
+ * Dashboard Ultra - Estilos Avançados
+ * Animações, transições e componentes otimizados
+ */
+
+/* ============================================================================
+   VARIÁVEIS CUSTOMIZADAS
+   ============================================================================ */
+
+:root {
+  /* Cores de tendência */
+  --color-trend-up: #10b981;
+  --color-trend-down: #ef4444;
+  --color-trend-neutral: #6b7280;
+
+  /* Cores de alerta */
+  --color-alert-info: #3b82f6;
+  --color-alert-warning: #f59e0b;
+  --color-alert-error: #ef4444;
+  --color-alert-success: #10b981;
+
+  /* Backgrounds de alerta */
+  --bg-alert-info: #dbeafe;
+  --bg-alert-warning: #fef3c7;
+  --bg-alert-error: #fee2e2;
+  --bg-alert-success: #d1fae5;
+
+  /* Sombras avançadas */
+  --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-active: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  /* Gradientes */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --gradient-error: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+
+  /* Transições */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* ============================================================================
+   ANIMAÇÕES GLOBAIS
+   ============================================================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================================
+   CLASSES DE ANIMAÇÃO
+   ============================================================================ */
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.4s ease-out;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.3s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.animate-pop {
+  animation: pop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* ============================================================================
+   DASHBOARD ULTRA - CONTAINER
+   ============================================================================ */
+
+.dashboard-ultra {
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ============================================================================
+   CARDS AVANÇADOS
+   ============================================================================ */
+
+.card-clickable {
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-clickable::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  pointer-events: none;
+}
+
+.card-clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover) !important;
+}
+
+.card-clickable:hover::before {
+  opacity: 1;
+}
+
+.card-clickable:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-active) !important;
+}
+
+/* ============================================================================
+   SKELETON LOADERS
+   ============================================================================ */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0%,
+    #e0e0e0 20%,
+    #f0f0f0 40%,
+    #f0f0f0 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+  border-radius: 0.5rem;
+}
+
+.skeleton-text {
+  height: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.skeleton-text:last-child {
+  width: 80%;
+}
+
+.skeleton-circle {
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+}
+
+/* ============================================================================
+   FILTRO BAR
+   ============================================================================ */
+
+.filtro-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+.filtro-bar .badge-soft {
+  transition: all var(--transition-fast);
+}
+
+.filtro-bar .badge-soft:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filtro-bar .badge-soft:active {
+  transform: scale(0.98);
+}
+
+/* ============================================================================
+   BUSCA RÁPIDA
+   ============================================================================ */
+
+.search-input {
+  transition: all var(--transition-normal);
+}
+
+.search-input:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(0, 93, 144, 0.1);
+  transform: scale(1.01);
+}
+
+/* ============================================================================
+   BADGES E PILLS
+   ============================================================================ */
+
+.pill-blue {
+  background: #eff6ff;
+  color: #1e40af;
+}
+
+.pill-green {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.pill-orange {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.pill-purple {
+  background: #f3e8ff;
+  color: #6b21a8;
+}
+
+.pill-red {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.badge-trend-up {
+  background: var(--bg-alert-success);
+  color: var(--color-trend-up);
+  font-weight: 600;
+}
+
+.badge-trend-down {
+  background: var(--bg-alert-error);
+  color: var(--color-trend-down);
+  font-weight: 600;
+}
+
+.badge-trend-neutral {
+  background: #f3f4f6;
+  color: var(--color-trend-neutral);
+  font-weight: 600;
+}
+
+/* ============================================================================
+   MODAL OVERLAY
+   ============================================================================ */
+
+.modal-overlay {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  animation: slideInUp 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ============================================================================
+   GRÁFICOS
+   ============================================================================ */
+
+.chart-container {
+  position: relative;
+  transition: all var(--transition-normal);
+}
+
+.chart-container:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ============================================================================
+   PROGRESS INDICATORS
+   ============================================================================ */
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 9999px;
+  transition: width var(--transition-normal);
+}
+
+.progress-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--color-primary) 0deg,
+    var(--color-primary) calc(var(--progress, 50) * 3.6deg),
+    #e5e7eb calc(var(--progress, 50) * 3.6deg),
+    #e5e7eb 360deg
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.progress-circle::before {
+  content: '';
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  background: white;
+  border-radius: 50%;
+}
+
+.progress-circle span {
+  position: relative;
+  z-index: 1;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* ============================================================================
+   SPARKLINES
+   ============================================================================ */
+
+.sparkline-container {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.sparkline-svg {
+  overflow: visible;
+}
+
+.sparkline-path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ============================================================================
+   TOOLTIPS
+   ============================================================================ */
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  background: #1f2937;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+  z-index: 1000;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+}
+
+/* ============================================================================
+   ESTADOS DE LOADING
+   ============================================================================ */
+
+.loading-spinner {
+  border: 3px solid #e5e7eb;
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  animation: spin 0.8s linear infinite;
+}
+
+.loading-dots {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.loading-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--color-primary);
+  border-radius: 50%;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.loading-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* ============================================================================
+   ESTADOS VAZIOS
+   ============================================================================ */
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #9ca3af;
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-description {
+  font-size: 1rem;
+  color: #9ca3af;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .dashboard-ultra {
+    padding: 1rem;
+  }
+
+  .card-clickable {
+    margin-bottom: 1rem;
+  }
+
+  .filtro-bar {
+    position: relative;
+  }
+
+  .progress-circle {
+    width: 80px;
+    height: 80px;
+  }
+
+  .progress-circle::before {
+    width: 60px;
+    height: 60px;
+  }
+
+  .progress-circle span {
+    font-size: 1.125rem;
+  }
+}
+
+/* ============================================================================
+   MODO ESCURO
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #111827;
+    --color-surface: #1f2937;
+    --color-text: #f9fafb;
+    --color-text-muted: #9ca3af;
+    --color-border: #374151;
+  }
+
+  .card-clickable {
+    background: var(--color-surface);
+  }
+
+  .filtro-bar {
+    background: rgba(31, 41, 55, 0.95) !important;
+  }
+
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      #374151 0%,
+      #4b5563 20%,
+      #374151 40%,
+      #374151 100%
+    );
+  }
+}
+
+/* ============================================================================
+   PRINT STYLES
+   ============================================================================ */
+
+@media print {
+  .dashboard-ultra {
+    padding: 0;
+  }
+
+  .filtro-bar,
+  .search-input,
+  button {
+    display: none !important;
+  }
+
+  .card-clickable {
+    page-break-inside: avoid;
+    box-shadow: none !important;
+  }
+
+  .modal-overlay {
+    display: none !important;
+  }
+}
+
+/* ============================================================================
+   ACESSIBILIDADE
+   ============================================================================ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.focus-visible:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Reduzir animações para usuários que preferem */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

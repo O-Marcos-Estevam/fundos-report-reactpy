@@ -1,0 +1,65 @@
+# Configuração do Ruff - Linter e Formatter Python
+
+# Diretórios a incluir
+src = ["src", "tests"]
+
+# Comprimento máximo de linha
+line-length = 100
+
+# Versão do Python
+target-version = "py310"
+
+[lint]
+# Regras a verificar
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+]
+
+# Regras a ignorar
+ignore = [
+    "E501",   # line-too-long (deixar para o formatter)
+    "B008",   # do not perform function calls in argument defaults
+    "B905",   # zip strict parameter
+]
+
+# Permitir auto-fix
+fixable = ["ALL"]
+unfixable = []
+
+# Arquivos a excluir
+exclude = [
+    ".git",
+    "__pycache__",
+    ".venv",
+    "venv",
+    "build",
+    "dist",
+    "*.egg-info",
+]
+
+[lint.per-file-ignores]
+# Permitir imports não utilizados em __init__.py
+"__init__.py" = ["F401"]
+# Permitir imports diversos em testes
+"tests/**/*.py" = ["F401", "F811"]
+
+[lint.isort]
+# Configuração do isort
+known-first-party = ["src", "app", "components", "models", "services", "pages", "modules"]
+force-single-line = false
+lines-after-imports = 2
+
+[format]
+# Configuração do formatter
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"

@@ -16,6 +16,7 @@ parts/
 sdist/
 var/
 wheels/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -23,11 +24,11 @@ MANIFEST
 
 # Virtual Environment
 venv/
-ENV/
 env/
+ENV/
 .venv
 
-# IDE
+# IDEs
 .vscode/
 .idea/
 *.swp
@@ -35,39 +36,57 @@ env/
 *~
 .DS_Store
 
-# Logs
-*.log
-logs/
-*.log.*
+# Jupyter Notebook
+.ipynb_checkpoints
 
-# Dados sensíveis
-*.mdb
-*.accdb
-data/*.xlsx
-data/*.csv
-*.env
+# PyCharm
+.idea/
+
+# Environments
+.env
 .env.local
+.env.*.local
 
-# Cache
-.cache/
+# Testing
 .pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
 
-# Backup
+# Data files (user generated)
+data/*.json
+!data/.gitkeep
+
+# Logs
+logs/
+*.log
+
+# Config files (sensitive)
+config/*.json
+!config/config_template.json
+
+# Temporary files
+*.tmp
 *.bak
+*.swp
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Railway
+.railway/
+
+# Static cache
+*.css.map
+*.js.map
+
+# Backup files
 *.backup
 *~
 
-# Windows
-Thumbs.db
-desktop.ini
-
-# Historico (pode conter dados sensíveis)
-data/historico.json
-
-# Documentação local (não necessária no deploy)
-docs/
-scripts/
-
-# Arquivos temporários
-*.tmp
-*.bak
+# Database
+*.db
+*.sqlite
+*.sqlite3

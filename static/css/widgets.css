@@ -1,0 +1,470 @@
+/**
+ * Widgets CSS
+ * Estilos para widgets modulares
+ */
+
+/* ============================================================================
+   WIDGET CONTAINER
+   ============================================================================ */
+
+.widget-container {
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.widget-container[data-size="small"] {
+    min-height: 200px;
+}
+
+.widget-container[data-size="medium"] {
+    min-height: 300px;
+}
+
+.widget-container[data-size="large"] {
+    min-height: 400px;
+}
+
+.widget-container[data-size="xlarge"] {
+    grid-column: span 2;
+    min-height: 300px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .widget-container[data-size="xlarge"] {
+        grid-column: span 1;
+    }
+}
+
+/* ============================================================================
+   WIDGET KPI
+   ============================================================================ */
+
+.widget-kpi {
+    text-align: center;
+    padding: 2rem;
+}
+
+.widget-kpi-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 1rem 0;
+}
+
+.widget-kpi-trend {
+    font-size: 1.25rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.widget-kpi-trend.positive {
+    color: #10b981;
+}
+
+.widget-kpi-trend.negative {
+    color: #ef4444;
+}
+
+.widget-kpi-trend.neutral {
+    color: #6b7280;
+}
+
+/* ============================================================================
+   WIDGET ALERTAS
+   ============================================================================ */
+
+.widget-alertas {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.alert-item {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.75rem;
+    border-left: 4px solid;
+    transition: all 0.2s;
+}
+
+.alert-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.alert-item.error {
+    background: #fef2f2;
+    border-color: #991b1b;
+}
+
+.alert-item.warning {
+    background: #fffbeb;
+    border-color: #92400e;
+}
+
+.alert-item.info {
+    background: #eff6ff;
+    border-color: #1e40af;
+}
+
+/* ============================================================================
+   WIDGET TOP FUNDOS
+   ============================================================================ */
+
+.top-fund-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    background: #f9fafb;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.top-fund-item:hover {
+    background: #f3f4f6;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.top-fund-rank {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+
+.top-fund-rank.rank-1 {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+.top-fund-rank.rank-2 {
+    background: linear-gradient(135deg, #94a3b8, #64748b);
+}
+
+.top-fund-rank.rank-3 {
+    background: linear-gradient(135deg, #d97706, #c2410c);
+}
+
+.top-fund-rank.rank-other {
+    background: #6b7280;
+}
+
+/* ============================================================================
+   WIDGET HEALTH SCORE
+   ============================================================================ */
+
+.health-score-bar {
+    width: 100%;
+    height: 0.5rem;
+    background: #e5e7eb;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.health-score-fill {
+    height: 100%;
+    transition: width 0.5s ease-out;
+    border-radius: 0.25rem;
+}
+
+.health-score-fill.excellent {
+    background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.health-score-fill.good {
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.health-score-fill.poor {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* ============================================================================
+   PAINEL DE CONFIGURAÇÃO
+   ============================================================================ */
+
+.config-panel {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    height: 100vh;
+    background: white;
+    box-shadow: -2px 0 12px rgba(0,0,0,0.15);
+    transition: right 0.3s ease;
+    z-index: 999;
+    overflow-y: auto;
+    padding: 2rem;
+}
+
+.config-panel.open {
+    right: 0;
+}
+
+.config-fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    border: none;
+    background: #005D90;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,93,144,0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.config-fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0,93,144,0.4);
+}
+
+.config-fab:active {
+    transform: scale(0.95);
+}
+
+/* ============================================================================
+   TOGGLE SWITCH
+   ============================================================================ */
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 3rem;
+    height: 1.5rem;
+}
+
+.toggle-switch input {
+    display: none;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #d1d5db;
+    border-radius: 1.5rem;
+    transition: 0.3s;
+}
+
+.toggle-slider::before {
+    position: absolute;
+    content: "";
+    height: 1.125rem;
+    width: 1.125rem;
+    left: 0.1875rem;
+    bottom: 0.1875rem;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+input:checked + .toggle-slider {
+    background: #10b981;
+}
+
+input:checked + .toggle-slider::before {
+    transform: translateX(1.5rem);
+}
+
+/* ============================================================================
+   GRID CUSTOMIZÁVEL
+   ============================================================================ */
+
+.dashboard-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-auto-rows: minmax(auto, auto);
+}
+
+.dashboard-grid.cols-1 {
+    grid-template-columns: 1fr;
+}
+
+.dashboard-grid.cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.dashboard-grid.cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.dashboard-grid.cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Responsividade */
+@media (max-width: 1280px) {
+    .dashboard-grid.cols-4 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .dashboard-grid.cols-3,
+    .dashboard-grid.cols-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .dashboard-grid.cols-2,
+    .dashboard-grid.cols-3,
+    .dashboard-grid.cols-4 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================================================
+   ANIMAÇÕES
+   ============================================================================ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.animate-slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* ============================================================================
+   ESTADOS VAZIOS
+   ============================================================================ */
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #9ca3af;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #6b7280;
+}
+
+.empty-state-description {
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ============================================================================
+   ACESSIBILIDADE
+   ============================================================================ */
+
+/* Focus visível para navegação por teclado */
+*:focus-visible {
+    outline: 2px solid #005D90;
+    outline-offset: 2px;
+}
+
+/* Reduzir movimento para usuários sensíveis */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Alto contraste */
+@media (prefers-contrast: high) {
+    .widget-container {
+        border: 2px solid #000;
+    }
+
+    .btn {
+        border: 2px solid currentColor;
+    }
+}
+
+/* ============================================================================
+   MODO ESCURO
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+    .widget-container {
+        background: #1f2937;
+        color: #f3f4f6;
+    }
+
+    .card-header {
+        border-color: #374151;
+    }
+
+    .top-fund-item {
+        background: #374151;
+    }
+
+    .top-fund-item:hover {
+        background: #4b5563;
+    }
+
+    .config-panel {
+        background: #1f2937;
+        color: #f3f4f6;
+    }
+}
+
+/* ============================================================================
+   IMPRESSÃO
+   ============================================================================ */
+
+@media print {
+    .config-fab,
+    .config-panel {
+        display: none !important;
+    }
+
+    .widget-container {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}

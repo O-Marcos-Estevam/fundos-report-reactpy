@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2025-11-17T16:21:08.938061",
+    "data_relatorio": "2025-11-10",
+    "status": "sucesso",
+    "tempo_execucao": 12.23351502418518,
+    "fundos_processados": 49,
+    "detalhes": {
+      "modulo": "Relatório_Fundos_V5_Enhanced"
+    }
+  }
+]

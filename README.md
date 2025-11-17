@@ -2,312 +2,359 @@
 
 Sistema modular de geração e análise de relatórios de fundos de investimento, construído com **ReactPy** e **FastAPI**.
 
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104%2B-green)](https://fastapi.tiangolo.com/)
+[![ReactPy](https://img.shields.io/badge/ReactPy-1.0%2B-purple)](https://reactpy.dev/)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+
 ## 🎯 Sobre o Projeto
 
-Esta aplicação é uma **reimplementação completa** do sistema original em Streamlit, agora com arquitetura modular, escalável e profissional usando ReactPy.
+Sistema profissional de geração e visualização de relatórios de fundos de investimento com arquitetura modular, escalável e otimizada.
 
-### Principais Melhorias
+### ✨ Principais Características
 
-✅ **Arquitetura Modular** - Código organizado em camadas (models, services, components, pages)
-✅ **24 Componentes Reutilizáveis** - Biblioteca completa de UI components
-✅ **Type Hints Completos** - Código totalmente tipado para melhor manutenção
-✅ **Gerenciamento de Estado** - StateManager centralizado e thread-safe
-✅ **Serviços Desacoplados** - Lógica de negócio separada da apresentação
-✅ **3 Versões de Relatório** - Suporte a V4, V5 e V6 Optimized
-✅ **Performance Otimizada** - Execução assíncrona e caching inteligente
+- ✅ **UI/UX Moderna** 🎨 - Design system profissional com gradientes, animações e dark mode
+- ✅ **Arquitetura Modular** - Código organizado em camadas (models, services, components, pages)
+- ✅ **30+ Componentes Reutilizáveis** - Biblioteca completa de UI components modernos
+- ✅ **Type Hints Completos** - Código totalmente tipado para melhor manutenção
+- ✅ **Gerenciamento de Estado** - StateManager centralizado e thread-safe
+- ✅ **3 Versões de Relatório** - Suporte a V4, V5 e V6 Optimized (70% mais rápido)
+- ✅ **Testes Automatizados** - Suite completa de testes unitários e integração
+- ✅ **Performance Otimizada** - Cache inteligente e queries paralelas
+- ✅ **Gráficos Interativos** - Visualizações com Plotly
+- ✅ **Responsivo** - Mobile-first design
+- ✅ **Deploy Flexível** - Suporte para Docker, Railway, Render, Heroku
 
 ## 📁 Estrutura do Projeto
 
 ```
 fundos_report_reactpy/
-├── app/
-│   ├── config.py           # Configurações centralizadas
-│   └── main.py             # Aplicação FastAPI + ReactPy
-├── models/
-│   ├── fundo.py            # Modelo de dados de Fundo
-│   ├── execucao.py         # Modelo de Execução
-│   └── historico.py        # Modelo de Histórico
-├── services/
-│   ├── state_manager.py    # Gerenciamento de estado
-│   ├── report_executor.py  # Executor de relatórios
-│   └── historico_service.py # Serviço de histórico
-├── components/
-│   ├── layout.py           # Header, sidebar, navegação
-│   ├── cards.py            # 5 tipos de cards
-│   ├── charts.py           # 5 tipos de gráficos
-│   ├── forms.py            # 6 componentes de formulário
-│   └── tables.py           # 4 tipos de tabelas
-├── pages/
-│   ├── executar.py         # Página de execução
-│   ├── dashboard.py        # Dashboard com métricas
-│   ├── lamina_fundos.py    # Detalhes de fundo
-│   └── historico.py        # Histórico de execuções
-├── data/
-│   └── historico.json      # Persistência de histórico
-├── requirements.txt
-└── README.md
+├── src/                          # Código fonte principal
+│   ├── app/                      # Aplicação e configurações
+│   │   ├── main.py              # FastAPI + ReactPy (refatorado ✨)
+│   │   ├── config.py            # Configurações centralizadas
+│   │   └── init_data.py         # Inicialização de dados (novo ✨)
+│   ├── models/                   # Modelos de dados
+│   │   ├── fundo.py             # FundoData
+│   │   ├── execucao.py          # ExecucaoInfo
+│   │   └── historico.py         # HistoricoEntry
+│   ├── services/                 # Lógica de negócio
+│   │   ├── state_manager.py     # StateManager Singleton
+│   │   ├── report_executor.py   # Executor de relatórios
+│   │   ├── historico_service.py # Persistência de histórico
+│   │   ├── cache_manager.py     # Gerenciamento de cache
+│   │   └── preferences_manager.py # Preferências do usuário
+│   ├── components/               # 30+ componentes UI reutilizáveis
+│   │   ├── layout_v2.py         # Layout moderno V2 ⭐
+│   │   ├── cards_modern.py      # Cards com gradiente
+│   │   ├── charts.py            # 5 tipos de gráficos (Plotly)
+│   │   ├── forms.py             # 6 componentes de formulário
+│   │   └── tables.py            # 4 tipos de tabelas
+│   ├── pages/                    # Páginas da aplicação
+│   │   ├── executar_modern.py   # Execução (moderna) ⭐
+│   │   ├── dashboard_ultra.py   # Dashboard Ultra ⭐
+│   │   ├── dashboard_customizavel.py # Dashboard customizável
+│   │   ├── lamina_fundos_modern.py  # Detalhes de fundos
+│   │   └── historico_modern.py  # Histórico modernizado
+│   ├── modules/                  # Módulos de relatório
+│   │   ├── v4/                   # Versão 4 (legado)
+│   │   ├── v5/                   # Versão 5 Enhanced
+│   │   └── v6/                   # Versão 6 Optimized ⭐
+│   └── utils/                    # Utilitários
+│       ├── server_utils.py      # Utilitários do servidor
+│       ├── performance.py       # Monitoramento de performance
+│       └── analytics.py         # Analytics
+├── config/                       # Configurações
+│   └── config_v6.json           # Configuração V6
+├── tests/                        # Testes automatizados
+│   ├── unit/                    # Testes unitários
+│   └── integration/             # Testes de integração
+├── docs/                         # Documentação completa ✨
+│   ├── ARCHITECTURE.md          # Arquitetura detalhada
+│   ├── DEPLOYMENT.md            # Guia de deploy
+│   ├── DEVELOPMENT.md           # Guia de desenvolvimento
+│   ├── MELHORIAS.md             # Melhorias implementadas ✨
+│   └── UI_DESIGN_SYSTEM.md      # Design System
+├── scripts/                      # Scripts utilitários ✨
+│   ├── debug_app.py             # Debug da aplicação
+│   ├── populate_sample_data.py  # Popular dados de teste
+│   └── fix_modern_grid.py       # Correções de layout
+├── static/                       # Assets estáticos (CSS consolidado ✨)
+│   └── css/
+│       ├── design-system.css    # Design tokens
+│       ├── components.css       # Componentes
+│       └── dashboard-ultra.css  # Dashboard ultra
+├── data/                         # Dados persistidos
+│   ├── historico.json           # Histórico de execuções
+│   └── user_preferences.json    # Preferências do usuário
+├── requirements.txt              # Dependências
+├── .gitignore                    # Git ignore (completo ✨)
+└── README.md                     # Este arquivo
 ```
 
-## 🚀 Instalação
+## 🚀 Instalação Rápida
 
-### 1. Clone ou navegue até o diretório
+### Pré-requisitos
+
+- Python 3.10 ou superior
+- MS Access Database Engine (Windows)
+- Git
+
+### Passos
 
 ```bash
+# 1. Clone ou navegue até o diretório
 cd fundos_report_reactpy
-```
 
-### 2. Crie um ambiente virtual (recomendado)
-
-```bash
+# 2. Crie ambiente virtual
 python -m venv venv
-```
 
-### 3. Ative o ambiente virtual
-
-**Windows:**
-```bash
+# 3. Ative o ambiente
+# Windows
 venv\Scripts\activate
-```
-
-**Linux/Mac:**
-```bash
+# Linux/Mac
 source venv/bin/activate
-```
 
-### 4. Instale as dependências
-
-```bash
+# 4. Instale dependências
 pip install -r requirements.txt
-```
 
-## 💻 Como Usar
+# 5. Configure variáveis de ambiente
+copy config\.env.example .env
+# Edite .env conforme necessário
 
-### Opção 1: Python Direto (Desenvolvimento)
-
-```bash
-python app/main.py
+# 6. Execute a aplicação
+python src/app/main.py
 ```
 
 Acesse: **http://localhost:8000**
 
-### Opção 2: Docker (Recomendado para Produção)
+## 💻 Uso
+
+### Páginas Disponíveis
+
+1. **📝 Executar** - Selecione data e versão para gerar relatórios
+2. **📊 Dashboard** - Visualize métricas agregadas e gráficos interativos
+3. **📄 Lâmina de Fundos** - Detalhes completos de cada fundo
+4. **📚 Histórico** - Consulte execuções anteriores
+5. **⚙️ Configurações** - Ajuste preferências da aplicação
+
+### Versões de Relatório
+
+| Versão | Performance | Recursos | Recomendação |
+|--------|------------|----------|--------------|
+| **V6 Optimized** ⭐ | 7-15s | Cache, Queries Paralelas, Analytics | **Produção** |
+| **V5 Enhanced** | 40-65s | 3 Abas, Formatação Avançada | Legado |
+| **V4 Legacy** | 40-65s | 1 Aba, Básico | Compatibilidade |
+
+## 🐳 Docker
 
 ```bash
-# Build e iniciar
+# Build
+docker-compose build
+
+# Run
 docker-compose up -d
 
-# Ver logs
-docker logs -f fundos-report
+# Logs
+docker-compose logs -f
 
-# Parar
+# Stop
 docker-compose down
 ```
 
-### Opção 3: Script Automatizado (Windows)
+## 🧪 Testes
 
 ```bash
-# Execute o script e escolha a opção desejada
-start.bat
+# Instalar dependências de dev
+pip install -r requirements-dev.txt
+
+# Executar todos os testes
+pytest
+
+# Com cobertura
+pytest --cov=src --cov-report=html
+
+# Apenas testes unitários
+pytest tests/unit/
+
+# Apenas testes de integração
+pytest tests/integration/ -m integration
 ```
 
-### Opção 4: Docker + ngrok (Acesso Público)
+## 🔧 Desenvolvimento
 
 ```bash
-# Terminal 1: Iniciar Docker
-docker-compose up -d
+# Linting e formatação
+ruff check --fix src/
+ruff format src/
 
-# Terminal 2: Iniciar ngrok
-ngrok http 8000
+# Type checking
+mypy src/
 
-# Compartilhe a URL https://xxx.ngrok.io gerada!
+# Organizar imports
+isort src/
 ```
 
-**📖 Guia completo de deploy:** Veja [DEPLOY.md](DEPLOY.md)
+Consulte [DEVELOPMENT.md](docs/DEVELOPMENT.md) para detalhes completos.
 
-## 📚 Funcionalidades
+## 📚 Documentação
 
-### 1. 🚀 Executar Relatório
-- Seleção de data (com quick select ontem/hoje)
-- Escolha de versão (V4/V5/V6)
-- Execução com progress bar em tempo real
-- Visualização de logs
-- Download de arquivos gerados
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md) - Arquitetura detalhada do sistema
+- [DEPLOYMENT.md](docs/DEPLOYMENT.md) - Guias de deploy (Local, Docker, Cloud)
+- [DEVELOPMENT.md](docs/DEVELOPMENT.md) - Guia de desenvolvimento e contribuição
+- [UI_DESIGN_SYSTEM.md](docs/UI_DESIGN_SYSTEM.md) - 🎨 **Design System completo** (NOVO!)
+- [UI_IMPROVEMENTS.md](UI_IMPROVEMENTS.md) - Resumo das melhorias de UI
 
-### 2. 📊 Dashboard
-- 4 cards de métricas principais
-- Gráfico de pizza (PL por tipo)
-- Gráfico de barras (Top 10 fundos)
-- Análise por tipo de fundo
-- Tabela completa com alertas
-- Estatísticas adicionais
+## 🎨 Design System
 
-### 3. 📄 Lâmina de Fundos
-- Seletor de fundo
-- 4 métricas principais
-- Gráfico de evolução de PL
-- Gráfico de composição patrimonial
-- Detalhes completos
-- Sistema de alertas automático
+O projeto agora conta com um **Design System profissional** completo:
 
-### 4. 📜 Histórico
-- Estatísticas gerais
-- Gráfico temporal de execuções
-- Tabela de execuções (últimas 20)
-- Botão para limpar histórico
+### Componentes Modernos
+- 🎯 **15+ Componentes CSS** - Buttons, cards, inputs, tables, badges, alerts
+- 🚀 **10+ Componentes React** - Layout moderno, cards com gradiente, glassmorphism
+- 🌈 **50+ Design Tokens** - Cores, tipografia, espaçamento, sombras
+- ✨ **Animações Suaves** - Fade in, slide up/down, hover effects
+- 🌙 **Dark Mode** - Tema escuro completo
+- 📱 **Responsivo** - Mobile-first design
 
-### 5. ⚙️ Configurações
-- Toggle modo escuro
-- Configurações de sistema
-- Informações de ambiente
-
-## 🏗️ Arquitetura
-
-### Camadas da Aplicação
-
-#### 1. Models (Modelos de Dados)
-- **FundoData**: Dados de um fundo com métodos de cálculo
-- **ExecucaoInfo**: Informações de uma execução
-- **HistoricoEntry**: Entrada no histórico
-
-#### 2. Services (Lógica de Negócio)
-- **StateManager**: Gerenciamento centralizado de estado (Singleton, thread-safe)
-- **ReportExecutor**: Importação e execução de relatórios V4/V5/V6
-- **HistoricoService**: Persistência e manipulação de histórico
-
-#### 3. Components (UI Reutilizáveis)
-- **Layout**: header, sidebar, navegação, containers
-- **Cards**: 5 tipos (métrica, status, info, fundo, estatística)
-- **Charts**: 5 tipos (pizza, barras, linha, evolução, timeline)
-- **Forms**: 6 tipos (data, versão, fundo, botão, texto, checkbox)
-- **Tables**: 4 tipos (fundos, histórico, detalhes, simples)
-
-#### 4. Pages (Páginas da Aplicação)
-- Cada página é um componente ReactPy independente
-- Usam componentes reutilizáveis da camada anterior
-- Comunicam-se via StateManager
-
-## 🔧 Configuração
-
-### Caminhos e Banco de Dados
-
-Edite o arquivo [app/config.py](app/config.py):
+### Exemplos
 
 ```python
-CAMINHO_MODULO = r"C:\bloko\Fundos - Documentos\00. Monitoramento\01. Rotinas\0. Python"
-DB_PATH = r"C:\bloko\Fundos - Documentos\00. Monitoramento\01. Rotinas\03. Arquivos Rotina\09. Base_de_Dados\Base Fundos_V2.accdb"
+from components.layout_modern import modern_header, modern_navigation
+from components.cards_modern import metric_card_modern
+
+# Header moderno com gradiente
+modern_header(titulo="Dashboard", subtitulo="v7.1")
+
+# Card de métrica com animações
+metric_card_modern(
+    titulo="Patrimônio Total",
+    valor="R$ 15.3B",
+    variacao=5.2,
+    icone="💰",
+    cor="success"
+)
 ```
 
-### Porta e Host
+Consulte [UI_DESIGN_SYSTEM.md](docs/UI_DESIGN_SYSTEM.md) para guia completo.
 
-```python
-class AppConfig:
-    HOST = "0.0.0.0"
-    PORT = 8000
+## 🌐 Deploy em Nuvem
+
+### Railway
+
+```bash
+railway init
+railway up
 ```
 
-## 🎨 Personalização
+### Render
 
-### Adicionar Nova Página
+Conecte repositório GitHub e configure `render.yaml`.
 
-1. Crie o arquivo em `pages/nova_pagina.py`:
+### Heroku
 
-```python
-from reactpy import component, html
-from components.layout import container_pagina
-
-@component
-def pagina_nova():
-    return container_pagina(
-        html.h2("Minha Nova Página")
-    )
+```bash
+heroku create fundos-report
+git push heroku main
 ```
 
-2. Adicione no `app/main.py`:
+Consulte [DEPLOYMENT.md](docs/DEPLOYMENT.md) para instruções completas.
 
-```python
-from pages.nova_pagina import pagina_nova
+## 🛠️ Tecnologias Utilizadas
 
-# Na função renderizar_pagina():
-elif pagina_atual == "nova":
-    return pagina_nova()
-```
+### Backend
+- **Python 3.10+**
+- **FastAPI** - Framework web assíncrono
+- **ReactPy** - Componentes reativos em Python
+- **pyodbc** - Conexão com MS Access
 
-### Criar Novo Componente
+### Frontend
+- **ReactPy** - UI declarativa
+- **Plotly** - Gráficos interativos
+- **HTML/CSS** - Estilização
 
-```python
-from reactpy import component, html
+### Dados
+- **MS Access** - Banco de dados
+- **pandas** - Processamento de dados
+- **numpy** - Cálculos numéricos
+- **openpyxl** - Geração de Excel
 
-@component
-def meu_componente(titulo: str, valor: str):
-    return html.div(
-        {"style": {"padding": "1rem"}},
-        html.h3(titulo),
-        html.p(valor)
-    )
-```
+### Dev Tools
+- **pytest** - Framework de testes
+- **ruff** - Linter e formatter
+- **mypy** - Type checking
+- **black** - Code formatter
 
-## 📊 Comparação: Streamlit vs ReactPy
+## 📊 Performance
 
-| Aspecto | Streamlit Original | ReactPy Novo |
-|---------|-------------------|--------------|
-| Linhas de código | 2.118 (monolítico) | ~3.000 (modular) |
-| Arquivos | 1 arquivo | 20+ arquivos organizados |
-| Componentes | Acoplados | 24 reutilizáveis |
-| Estado | st.session_state | StateManager OOP |
-| Type hints | Parcial | 100% |
-| Testabilidade | Difícil | Fácil |
-| Manutenibilidade | Baixa | Alta |
-| Escalabilidade | Limitada | Excelente |
-
-## 🐛 Troubleshooting
-
-### Erro: Módulo não encontrado
-
-Verifique se o caminho está correto em `config.py`:
-
-```python
-CAMINHO_MODULO = r"C:\seu\caminho\aqui"
-```
-
-### Erro: Banco de dados não conecta
-
-1. Verifique se o arquivo `.accdb` existe
-2. Instale o driver MS Access (32-bit ou 64-bit correspondente ao Python)
-3. Teste a conexão na página "Executar"
-
-### Porta 8000 em uso
-
-Altere a porta em `config.py`:
-
-```python
-class AppConfig:
-    PORT = 8080  # ou outra porta disponível
-```
-
-## 📝 Próximas Melhorias
-
-- [ ] Testes unitários (pytest)
-- [ ] Integração com CI/CD
-- [ ] Docker containerization
-- [ ] API REST para integração externa
-- [ ] Exportação de relatórios em PDF
-- [ ] Sistema de notificações (email/slack)
-- [ ] Dashboard de performance
-- [ ] Autenticação de usuários
+| Métrica | V4/V5 | V6 Optimized |
+|---------|-------|--------------|
+| **Tempo de execução** | 40-65s | **7-15s** (70% mais rápido) |
+| **Queries SQL** | Sequenciais | **Paralelas** |
+| **Cache** | Não | **Sim** (TTL 300s) |
+| **Pool conexões** | Não | **Sim** (3 conexões) |
+| **Analytics** | Não | **Sim** (Health Score + Alertas) |
 
 ## 🤝 Contribuindo
 
-Contribuições são bem-vindas! Este projeto foi construído com arquitetura modular pensando em fácil extensão.
+1. Fork o projeto
+2. Crie uma branch (`git checkout -b feature/nova-feature`)
+3. Commit suas mudanças (`git commit -m 'feat: adicionar nova feature'`)
+4. Push para a branch (`git push origin feature/nova-feature`)
+5. Abra um Pull Request
+
+Consulte [DEVELOPMENT.md](docs/DEVELOPMENT.md) para convenções de código.
+
+## 📝 Changelog
+
+### Versão 7.1 (Atual) ✨
+- ✅ **Código refatorado** - Sistema de roteamento otimizado
+- ✅ **Logging estruturado** - Logs profissionais com níveis de severidade
+- ✅ **Validação de entrada** - Segurança aprimorada
+- ✅ **Error handling** - Tratamento robusto de erros
+- ✅ **Módulo init_data.py** - Inicialização de dados separada
+- ✅ **Configuração via ambiente** - `LOAD_SAMPLE_DATA` variável
+- ✅ **Estrutura organizada** - Pastas docs/, scripts/ consolidadas
+- ✅ **.gitignore completo** - Ignorar arquivos desnecessários
+
+### Versão 7.0
+- ✅ Arquitetura modular completa
+- ✅ 30+ componentes reutilizáveis
+- ✅ Estrutura de testes
+- ✅ Documentação consolidada
+- ✅ Configurações separadas
+- ✅ Suporte a linting/formatting
+
+### Versão 6.0
+- ✨ Módulo V6 Optimized (70% mais rápido)
+- ✨ Cache inteligente
+- ✨ Queries paralelas
+- ✨ Analytics engine
+
+### Versão 5.0
+- ✨ Formatação avançada Excel
+- ✨ 3 abas de relatório
+- ✨ Gráficos integrados
 
 ## 📄 Licença
 
-Este projeto é de uso interno.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## 👥 Contato
+## 👥 Autores
 
-Para dúvidas ou sugestões sobre a arquitetura modular ReactPy, consulte a documentação dos componentes nos respectivos arquivos.
+**Equipe de Desenvolvimento** - Relatório Diário de Fundos
+
+## 🔗 Links Úteis
+
+- [ReactPy Documentation](https://reactpy.dev/)
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [Plotly Documentation](https://plotly.com/python/)
+- [pytest Documentation](https://docs.pytest.org/)
+
+## 💡 Suporte
+
+Para dúvidas ou problemas, abra uma issue no GitHub ou consulte a documentação em [docs/](docs/).
 
 ---
 
-**Versão 7.0** - Arquitetura Modular com ReactPy
-Reimplementado de Streamlit para ReactPy com melhorias substanciais em organização, manutenibilidade e escalabilidade.
+**Desenvolvido com ❤️ usando ReactPy e FastAPI**
