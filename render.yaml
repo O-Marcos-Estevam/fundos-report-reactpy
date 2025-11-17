@@ -3,9 +3,11 @@ services:
     name: fundos-report-reactpy
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python app/main.py
+    startCommand: python src/app/main.py
     envVars:
       - key: PYTHONUNBUFFERED
         value: 1
+      - key: LOAD_SAMPLE_DATA
+        value: true
       - key: PORT
         value: 8000

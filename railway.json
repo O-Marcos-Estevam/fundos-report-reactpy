@@ -4,10 +4,11 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "python app/main.py",
+    "startCommand": "python src/app/main.py",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10,
     "env": {
+      "LOAD_SAMPLE_DATA": "true",
       "USE_MOCK_DATA": "true",
       "PYTHONUNBUFFERED": "1"
     }
