@@ -77,10 +77,15 @@ class ReportDiarioFundosV6:
         # Carregar configuração
         if config_path is None:
             # Tentar diferentes localizações do config
+            # __file__ = src/modules/v6/Relatório_Fundos_V6_Optimized.py
+            module_dir = Path(__file__).parent  # src/modules/v6/
+            src_dir = module_dir.parent.parent  # src/
+            project_root = src_dir.parent  # raiz do projeto
+
             possible_paths = [
-                Path(__file__).parent / "config_v6.json",  # Mesmo diretório (Windows local)
-                Path(__file__).parent.parent.parent / "config" / "config_v6.json",  # Projeto ReactPy
-                Path(__file__).parent.parent.parent / "config" / "config_v6_railway.json",  # Railway
+                module_dir / "config_v6.json",  # src/modules/v6/config_v6.json (Windows local)
+                project_root / "config" / "config_v6_railway.json",  # config/config_v6_railway.json (Railway - prioridade)
+                project_root / "config" / "config_v6.json",  # config/config_v6.json (fallback)
             ]
 
             config_path = None
@@ -90,7 +95,13 @@ class ReportDiarioFundosV6:
                     break
 
             if config_path is None:
-                raise FileNotFoundError("Arquivo config_v6.json não encontrado")
+                # Logging para debug
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"Config não encontrado. Caminhos tentados:")
+                for path in possible_paths:
+                    logger.error(f"  - {path} (exists: {path.exists()})")
+                raise FileNotFoundError(f"Arquivo config_v6.json não encontrado. Tentados: {possible_paths}")
 
         with open(config_path, 'r', encoding='utf-8') as f:
             self.config = json.load(f)
