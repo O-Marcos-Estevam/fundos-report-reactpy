@@ -36,17 +36,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Paths condicionais baseados no ambiente
 if is_cloud_environment():
-    # Ambiente cloud - sem Access
-    CAMINHO_MODULO = None
-    DB_PATH = None
+    # Ambiente cloud - usa módulos internos do projeto com SQLite
+    CAMINHO_MODULO = str(BASE_DIR / "modules")
+    DB_PATH = str(BASE_DIR / "data" / "fundos_v2.db")
 elif is_windows():
     # Windows local - com Access
     CAMINHO_MODULO = r"C:\bloko\Fundos - Documentos\00. Monitoramento\01. Rotinas\0. Python"
     DB_PATH = r"C:\bloko\Fundos - Documentos\00. Monitoramento\01. Rotinas\03. Arquivos Rotina\09. Base_de_Dados\Base Fundos_V2.accdb"
 else:
-    # Linux local - sem Access
-    CAMINHO_MODULO = None
-    DB_PATH = None
+    # Linux local - usa módulos internos do projeto com SQLite
+    CAMINHO_MODULO = str(BASE_DIR / "modules")
+    DB_PATH = str(BASE_DIR / "data" / "fundos_v2.db")
 
 # Diretórios da aplicação
 DATA_DIR = BASE_DIR / "data"
@@ -80,7 +80,8 @@ MODULOS_RELATORIO: Dict[str, ModuloConfig] = {
         nome_arquivo='Relatório_Fundos_V6_Optimized.py',
         nome_classe='ReportDiarioFundosV6',
         nomes_possiveis=[
-            "Relatório_Fundos_V6_Optimized",
+            "modules.v6.Relatório_Fundos_V6_Optimized",  # Projeto ReactPy (cloud/Linux)
+            "Relatório_Fundos_V6_Optimized",  # Windows local
             "relatorio_fundos_v6_optimized",
         ],
         descricao='V6 Optimized - Performance 70% mais rápida, análise preditiva'
@@ -90,7 +91,8 @@ MODULOS_RELATORIO: Dict[str, ModuloConfig] = {
         nome_arquivo='Relatório_Fundos_V5_Enhanced.py',
         nome_classe='ReportDiarioFundosV5',
         nomes_possiveis=[
-            "Relatório_Fundos_V5_Enhanced",
+            "modules.v5.Relatório_Fundos_V5_Enhanced",  # Projeto ReactPy (cloud/Linux)
+            "Relatório_Fundos_V5_Enhanced",  # Windows local
             "relatorio_fundos_v5_enhanced",
         ],
         descricao='V5 Enhanced - Relatório com 3 abas e formatação avançada'
@@ -100,7 +102,8 @@ MODULOS_RELATORIO: Dict[str, ModuloConfig] = {
         nome_arquivo='Relatório_Fundos_V4.py',
         nome_classe='ReportDiarioFundosV4',
         nomes_possiveis=[
-            "Relatório_Fundos_V4",
+            "modules.v4.Relatório_Fundos_V4",  # Projeto ReactPy (cloud/Linux)
+            "Relatório_Fundos_V4",  # Windows local
             "relatorio_fundos_v4"
         ],
         descricao='V4 Legacy - Versão anterior para compatibilidade'

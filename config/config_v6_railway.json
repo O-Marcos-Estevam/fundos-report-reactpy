@@ -1,0 +1,50 @@
+{
+  "database": {
+    "path": "data/fundos_v2.db",
+    "pool_size": 3,
+    "timeout": 30
+  },
+  "output": {
+    "main_path": "reports/Fundos - Report Diário.xlsx",
+    "reports_dir": "reports",
+    "logs_dir": "logs",
+    "backup_enabled": true,
+    "backup_format": "%Y%m%d_%H%M%S"
+  },
+  "cache": {
+    "enabled": true,
+    "ttl_seconds": 300,
+    "max_size_mb": 100,
+    "cache_dir": "logs/cache"
+  },
+  "performance": {
+    "parallel_queries": true,
+    "max_workers": 3,
+    "chunk_size": 100
+  },
+  "analytics": {
+    "enable_alerts": true,
+    "enable_predictions": true,
+    "zscore_threshold": 2.0,
+    "alert_rules": {
+      "pl_negativo": true,
+      "retorno_acumulado_negativo": true,
+      "volatilidade_alta": true,
+      "baixo_sharpe": true,
+      "drawdown_excessivo": true,
+      "exposicao_alta": true
+    }
+  },
+  "excel": {
+    "format_numbers": true,
+    "freeze_panes": true,
+    "auto_filter": true,
+    "include_charts": true
+  },
+  "logging": {
+    "level": "INFO",
+    "log_to_file": true,
+    "log_file": "logs/fundos_v6.log",
+    "colorize": true
+  }
+}
