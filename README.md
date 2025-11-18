@@ -325,7 +325,15 @@ Consulte [DEVELOPMENT.md](docs/DEVELOPMENT.md) para convenções de código.
 
 ## 📝 Changelog
 
-### Versão 7.2.1 (Atual) 🚀
+### Versão 7.3 (Atual) 🎉 **DADOS REAIS NO RAILWAY**
+- ✅ **Banco SQLite com dados reais** - 409 MB, 39 tabelas, 800k+ registros
+- ✅ **Railway com dados reais** - USE_MOCK_DATA=false ativado
+- ✅ **Git LFS** - Suporte para arquivos grandes (.db)
+- ✅ **Script de conversão aprimorado** - Flag --yes para automação
+- ✅ **Modo híbrido** - Access (local) + SQLite (cloud)
+- ✅ **Banner verde PRODUÇÃO** - Indicador visual de dados reais
+
+### Versão 7.2.1 🚀
 - ✅ **Modo DEMO funcional** - Execução de relatórios no Railway sem Access
 - ✅ **Simulação realista** - Feedback visual com progresso e logs
 - ✅ **Detecção inteligente** - Sistema auto-detecta ambiente (cloud vs local)
