@@ -51,8 +51,14 @@ from openpyxl.formatting.rule import ColorScaleRule, DataBarRule, IconSetRule
 from colorama import init, Fore, Style
 
 # Imports dos módulos V6
-from database_manager_v6 import DatabaseManager
-from analytics_engine_v6 import AnalyticsEngine, FundoMetrics, AlertLevel
+try:
+    # Tentar import relativo (quando módulo está no projeto)
+    from .database_manager_v6 import DatabaseManager
+    from .analytics_engine_v6 import AnalyticsEngine, FundoMetrics, AlertLevel
+except ImportError:
+    # Fallback para import absoluto (Windows local)
+    from database_manager_v6 import DatabaseManager
+    from analytics_engine_v6 import AnalyticsEngine, FundoMetrics, AlertLevel
 
 # Inicializa colorama
 init(autoreset=True)
@@ -70,7 +76,21 @@ class ReportDiarioFundosV6:
         """
         # Carregar configuração
         if config_path is None:
-            config_path = Path(__file__).parent / "config_v6.json"
+            # Tentar diferentes localizações do config
+            possible_paths = [
+                Path(__file__).parent / "config_v6.json",  # Mesmo diretório (Windows local)
+                Path(__file__).parent.parent.parent / "config" / "config_v6.json",  # Projeto ReactPy
+                Path(__file__).parent.parent.parent / "config" / "config_v6_railway.json",  # Railway
+            ]
+
+            config_path = None
+            for path in possible_paths:
+                if path.exists():
+                    config_path = path
+                    break
+
+            if config_path is None:
+                raise FileNotFoundError("Arquivo config_v6.json não encontrado")
 
         with open(config_path, 'r', encoding='utf-8') as f:
             self.config = json.load(f)
