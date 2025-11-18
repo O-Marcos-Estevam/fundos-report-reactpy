@@ -9,6 +9,7 @@ import pyodbc
 import logging
 from pathlib import Path
 from datetime import datetime
+from decimal import Decimal
 from typing import List, Dict, Any
 
 # Configurar logging
@@ -185,24 +186,42 @@ class AccessToSQLiteConverter:
 
             # Inserir dados
             row_count = 0
+            errors = 0
             for row in rows:
-                # Converter valores (especialmente datas)
-                converted_row = []
-                for value in row:
-                    if isinstance(value, datetime):
-                        converted_row.append(value.isoformat())
-                    else:
-                        converted_row.append(value)
+                try:
+                    # Converter valores (especialmente datas)
+                    converted_row = []
+                    for value in row:
+                        if isinstance(value, datetime):
+                            converted_row.append(value.isoformat())
+                        elif isinstance(value, Decimal):
+                            # Converter Decimal para float
+                            converted_row.append(float(value))
+                        elif isinstance(value, bytes):
+                            # Tentar decodificar bytes, se falhar, usar None
+                            try:
+                                converted_row.append(value.decode('utf-8', errors='replace'))
+                            except:
+                                converted_row.append(None)
+                        else:
+                            converted_row.append(value)
 
-                sqlite_cursor.execute(insert_sql, converted_row)
-                row_count += 1
+                    sqlite_cursor.execute(insert_sql, converted_row)
+                    row_count += 1
+                except Exception as row_error:
+                    errors += 1
+                    if errors <= 5:  # Mostrar apenas primeiros 5 erros
+                        logger.warning(f"  ⚠ Erro em registro {row_count + errors}: {str(row_error)[:100]}")
 
             sqlite_conn.commit()
-            logger.info(f"  ✓ Copiados {row_count} registros para {table_name}")
+            if errors > 0:
+                logger.warning(f"  ⚠ Copiados {row_count} registros para {table_name} ({errors} erros ignorados)")
+            else:
+                logger.info(f"  ✓ Copiados {row_count} registros para {table_name}")
 
         except Exception as e:
             logger.error(f"  ✗ Erro ao copiar dados de {table_name}: {e}")
-            raise
+            # Não propagar erro - continuar com próxima tabela
 
     def convert(self, tables_to_convert: List[str] = None) -> bool:
         """
@@ -231,26 +250,43 @@ class AccessToSQLiteConverter:
                 logger.info(f"Convertendo TODAS as {len(tables)} tabelas")
 
             # Converter cada tabela
+            success_count = 0
+            error_count = 0
+
             for i, table_name in enumerate(tables, 1):
-                logger.info(f"\n[{i}/{len(tables)}] Processando: {table_name}")
+                try:
+                    logger.info(f"\n[{i}/{len(tables)}] Processando: {table_name}")
 
-                # Obter schema
-                columns = self.get_table_schema(access_conn, table_name)
+                    # Obter schema
+                    columns = self.get_table_schema(access_conn, table_name)
 
-                # Criar tabela no SQLite
-                self.create_sqlite_table(sqlite_conn, table_name, columns)
+                    # Criar tabela no SQLite
+                    self.create_sqlite_table(sqlite_conn, table_name, columns)
 
-                # Copiar dados
-                self.copy_table_data(access_conn, sqlite_conn, table_name)
+                    # Copiar dados
+                    self.copy_table_data(access_conn, sqlite_conn, table_name)
+
+                    success_count += 1
+
+                except Exception as e:
+                    error_count += 1
+                    logger.error(f"  ✗ Falha ao processar tabela {table_name}: {e}")
+                    logger.info("  → Continuando com próxima tabela...")
 
             # Fechar conexões
             access_conn.close()
             sqlite_conn.close()
 
             logger.info("\n" + "="*70)
-            logger.info("✅ CONVERSÃO CONCLUÍDA COM SUCESSO!")
+            if error_count == 0:
+                logger.info("✅ CONVERSÃO CONCLUÍDA COM SUCESSO!")
+            else:
+                logger.info("⚠️  CONVERSÃO CONCLUÍDA COM AVISOS")
             logger.info(f"   Arquivo SQLite: {self.sqlite_db_path}")
             logger.info(f"   Tamanho: {self.sqlite_db_path.stat().st_size / 1024 / 1024:.2f} MB")
+            logger.info(f"   Tabelas convertidas: {success_count}/{len(tables)}")
+            if error_count > 0:
+                logger.info(f"   Tabelas com erros: {error_count}")
             logger.info("="*70)
 
             return True
@@ -262,6 +298,12 @@ class AccessToSQLiteConverter:
 
 def main():
     """Função principal do script"""
+    # Configurar encoding UTF-8 para Windows
+    import sys
+    if sys.platform == 'win32':
+        import io
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
     print("="*70)
     print("  CONVERSOR: Microsoft Access → SQLite")
     print("  Fundos Report ReactPy")
