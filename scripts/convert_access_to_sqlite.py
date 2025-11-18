@@ -314,14 +314,16 @@ def main():
     DEFAULT_ACCESS_PATH = r"C:\bloko\Fundos - Documentos\00. Monitoramento\01. Rotinas\03. Arquivos Rotina\09. Base_de_Dados\Base Fundos_V2.accdb"
     DEFAULT_SQLITE_PATH = r"data\fundos_v2.db"
 
-    # Verificar argumentos
-    if len(sys.argv) > 1:
-        access_path = sys.argv[1]
+    # Verificar argumentos (ignorar flags)
+    args = [arg for arg in sys.argv[1:] if not arg.startswith('-')]
+
+    if len(args) > 0:
+        access_path = args[0]
     else:
         access_path = DEFAULT_ACCESS_PATH
 
-    if len(sys.argv) > 2:
-        sqlite_path = sys.argv[2]
+    if len(args) > 1:
+        sqlite_path = args[1]
     else:
         sqlite_path = DEFAULT_SQLITE_PATH
 
@@ -329,11 +331,14 @@ def main():
     print(f"💾 SQLite:  {sqlite_path}")
     print()
 
-    # Confirmar
-    response = input("Deseja continuar? (s/n): ")
-    if response.lower() not in ['s', 'sim', 'y', 'yes']:
-        print("❌ Operação cancelada.")
-        return
+    # Confirmar (aceitar --yes para automação)
+    if '--yes' not in sys.argv and '-y' not in sys.argv:
+        response = input("Deseja continuar? (s/n): ")
+        if response.lower() not in ['s', 'sim', 'y', 'yes']:
+            print("❌ Operação cancelada.")
+            return
+    else:
+        print("✅ Confirmação automática ativada (--yes)")
 
     print()
     logger.info("Iniciando conversão...")
