@@ -215,6 +215,10 @@ if static_dir.exists():
 else:
     logger.warning(f"Diretório de arquivos estáticos não encontrado: {static_dir}")
 
+# Adicionar endpoint de diagnóstico
+from app.diagnostico import router as diagnostico_router
+app.include_router(diagnostico_router)
+
 # Configurar ReactPy
 configure(app, app_root)
 
