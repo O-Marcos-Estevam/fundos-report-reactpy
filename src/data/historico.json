@@ -1,5 +1,25 @@
 [
   {
+    "timestamp": "2025-11-18T18:54:33.357542",
+    "data_relatorio": "2025-11-11",
+    "status": "sucesso",
+    "tempo_execucao": 6.2781665325164795,
+    "fundos_processados": 47,
+    "detalhes": {
+      "modulo": "Relatório_Fundos_V6_Optimized"
+    }
+  },
+  {
+    "timestamp": "2025-11-18T00:26:05.625519",
+    "data_relatorio": "2025-11-10",
+    "status": "sucesso",
+    "tempo_execucao": 3.3813395500183105,
+    "fundos_processados": 49,
+    "detalhes": {
+      "modulo": "Relatório_Fundos_V5_Enhanced"
+    }
+  },
+  {
     "timestamp": "2025-11-17T16:21:08.938061",
     "data_relatorio": "2025-11-10",
     "status": "sucesso",
