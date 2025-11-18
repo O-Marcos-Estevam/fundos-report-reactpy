@@ -96,12 +96,10 @@ class ReportDiarioFundosV6:
 
             if config_path is None:
                 # Logging para debug
-                import logging
-                logger = logging.getLogger(__name__)
-                logger.error(f"Config não encontrado. Caminhos tentados:")
+                error_msg = "Config não encontrado. Caminhos tentados:\n"
                 for path in possible_paths:
-                    logger.error(f"  - {path} (exists: {path.exists()})")
-                raise FileNotFoundError(f"Arquivo config_v6.json não encontrado. Tentados: {possible_paths}")
+                    error_msg += f"  - {path} (exists: {path.exists()})\n"
+                raise FileNotFoundError(error_msg)
 
         with open(config_path, 'r', encoding='utf-8') as f:
             self.config = json.load(f)
