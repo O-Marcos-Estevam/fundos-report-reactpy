@@ -16,7 +16,7 @@ from pathlib import Path
 
 from models.execucao import ExecucaoInfo
 from models.fundo import FundoData
-from app.config import CAMINHO_MODULO, get_modulo_config
+from app.config import CAMINHO_MODULO, get_modulo_config, AppConfig
 
 logger = logging.getLogger(__name__)
 
@@ -111,6 +111,10 @@ class ReportExecutor:
         Returns:
             ExecucaoInfo com resultado da execução
         """
+        # Verificar se está em modo DEMO (sem Access)
+        if AppConfig.USE_MOCK_DATA:
+            return self._executar_modo_demo(data_relatorio, progress_callback, log_callback)
+
         execucao = ExecucaoInfo(
             data_relatorio=data_relatorio,
             versao_modulo=self.versao,
@@ -306,6 +310,90 @@ class ReportExecutor:
 
         return arquivos
 
+    def _executar_modo_demo(
+        self,
+        data_relatorio: datetime,
+        progress_callback: Optional[Callable[[int, str], None]] = None,
+        log_callback: Optional[Callable[[str], None]] = None
+    ) -> ExecucaoInfo:
+        """
+        Executa relatório em modo DEMO (sem Access real)
+        Retorna dados de exemplo já existentes no state_manager
+
+        Args:
+            data_relatorio: Data do relatório
+            progress_callback: Função callback(progresso, mensagem)
+            log_callback: Função callback(mensagem_log)
+
+        Returns:
+            ExecucaoInfo com dados de exemplo
+        """
+        from services.state_manager import get_state_manager
+
+        inicio = time.time()
+
+        # Simulação de progresso
+        if progress_callback:
+            progress_callback(10, "🎭 Modo Demonstração - Carregando dados de exemplo...")
+            time.sleep(0.3)
+
+        if log_callback:
+            log_callback("INFO: Executando em modo DEMO")
+            log_callback(f"INFO: Data do relatório: {data_relatorio.strftime('%d/%m/%Y')}")
+            log_callback(f"INFO: Versão: {self.versao}")
+
+        if progress_callback:
+            progress_callback(30, "Carregando fundos de exemplo...")
+            time.sleep(0.3)
+
+        # Obter dados de exemplo do state_manager (já criados por init_data.py)
+        state_manager = get_state_manager()
+        execucao_exemplo = state_manager.ultima_execucao
+
+        if log_callback:
+            log_callback(f"INFO: {len(execucao_exemplo.fundos) if execucao_exemplo else 0} fundos carregados")
+
+        if progress_callback:
+            progress_callback(60, "Processando métricas...")
+            time.sleep(0.3)
+
+        if log_callback:
+            log_callback("INFO: Calculando indicadores")
+            log_callback("INFO: Gerando análises")
+
+        if progress_callback:
+            progress_callback(90, "Finalizando relatório...")
+            time.sleep(0.3)
+
+        # Criar execução baseada nos dados de exemplo
+        execucao = ExecucaoInfo(
+            data_relatorio=data_relatorio,
+            data_execucao=datetime.now(),
+            versao_modulo=self.versao,
+            nome_modulo=f"DEMO_{self.versao}",
+            status="sucesso",
+            mensagem="🎭 MODO DEMONSTRAÇÃO - Relatório gerado com dados de exemplo",
+            tempo_execucao=time.time() - inicio,
+            fundos_processados=len(execucao_exemplo.fundos) if execucao_exemplo else 5,
+            fundos=execucao_exemplo.fundos if execucao_exemplo else {},
+            logs=[
+                "🎭 Executado em modo DEMONSTRAÇÃO",
+                f"Versão: {self.versao}",
+                f"Data: {data_relatorio.strftime('%d/%m/%Y')}",
+                f"Fundos: {len(execucao_exemplo.fundos) if execucao_exemplo else 5}",
+                "⚠️ Para executar com dados reais, configure o banco Access localmente"
+            ]
+        )
+
+        if progress_callback:
+            progress_callback(100, "✅ Relatório DEMO concluído!")
+
+        if log_callback:
+            log_callback("SUCCESS: Execução concluída com sucesso")
+            log_callback(f"SUCCESS: Tempo total: {execucao.tempo_execucao:.2f}s")
+
+        return execucao
+
     def testar_conexao(self) -> Tuple[bool, Optional[str]]:
         """
         Testa a conexão com o banco de dados
@@ -313,6 +401,10 @@ class ReportExecutor:
         Returns:
             (sucesso, mensagem_erro)
         """
+        # Modo demo sempre retorna sucesso
+        if AppConfig.USE_MOCK_DATA:
+            return True, "🎭 Modo DEMO - Usando dados de exemplo"
+
         try:
             sucesso, erro = self.importar_modulo()
             if not sucesso:

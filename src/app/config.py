@@ -197,24 +197,29 @@ def validar_ambiente() -> tuple[bool, list[str]]:
     """
     errors = []
 
+    # Modo DEMO sempre é válido
+    if AppConfig.USE_MOCK_DATA:
+        return True, []
+
     # Verificar banco de dados
-    if not os.path.exists(DB_PATH):
+    if DB_PATH and not os.path.exists(DB_PATH):
         errors.append(f"Banco de dados não encontrado: {DB_PATH}")
 
     # Verificar diretório de módulos
-    if not os.path.exists(CAMINHO_MODULO):
+    if CAMINHO_MODULO and not os.path.exists(CAMINHO_MODULO):
         errors.append(f"Diretório de módulos não encontrado: {CAMINHO_MODULO}")
 
     # Verificar pelo menos um módulo de relatório
-    modulo_encontrado = False
-    for config in MODULOS_RELATORIO.values():
-        caminho = os.path.join(CAMINHO_MODULO, config.nome_arquivo)
-        if os.path.exists(caminho):
-            modulo_encontrado = True
-            break
+    if CAMINHO_MODULO:
+        modulo_encontrado = False
+        for config in MODULOS_RELATORIO.values():
+            caminho = os.path.join(CAMINHO_MODULO, config.nome_arquivo)
+            if os.path.exists(caminho):
+                modulo_encontrado = True
+                break
 
-    if not modulo_encontrado:
-        errors.append("Nenhum módulo de relatório encontrado")
+        if not modulo_encontrado:
+            errors.append("Nenhum módulo de relatório encontrado")
 
     return len(errors) == 0, errors
 
