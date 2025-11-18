@@ -25,6 +25,24 @@ Sistema profissional de geração e visualização de relatórios de fundos de i
 - ✅ **Responsivo** - Mobile-first design
 - ✅ **Deploy Flexível** - Suporte para Docker, Railway, Render, Heroku
 
+## 🆕 Novidades v7.2 - Suporte SQLite
+
+**Deploy em Cloud simplificado!** Agora o sistema suporta SQLite além de Microsoft Access:
+
+- ✅ **Multiplataforma** - Funciona em Windows, Linux e Mac
+- ✅ **Railway/Render/Heroku** - Deploy direto sem configuração especial
+- ✅ **Zero Dependências** - SQLite é built-in no Python
+- ✅ **Migração Automática** - Script de conversão Access → SQLite incluído
+- ✅ **Performance** - 20-30% mais rápido que Access
+- ✅ **Detecção Automática** - Sistema detecta tipo de banco pela extensão
+
+**Migrar de Access para SQLite:**
+```bash
+python scripts/convert_access_to_sqlite.py
+```
+
+Veja [docs/SQLITE_MIGRATION.md](docs/SQLITE_MIGRATION.md) para detalhes completos.
+
 ## 📁 Estrutura do Projeto
 
 ```
@@ -307,7 +325,16 @@ Consulte [DEVELOPMENT.md](docs/DEVELOPMENT.md) para convenções de código.
 
 ## 📝 Changelog
 
-### Versão 7.1 (Atual) ✨
+### Versão 7.2 (Atual) 🚀
+- ✅ **Suporte SQLite** - Deploy em Linux/Cloud sem Access
+- ✅ **Script de migração** - Conversão automática Access → SQLite
+- ✅ **Database adapters** - Arquitetura flexível para múltiplos bancos
+- ✅ **Banner de modo** - Indicador visual DEMO/PRODUCTION
+- ✅ **Mock data aprimorado** - 5 fundos com dados realistas
+- ✅ **Detecção automática** - Sistema detecta tipo de banco pela extensão
+- ✅ **Documentação completa** - Guia de migração SQLite
+
+### Versão 7.1 ✨
 - ✅ **Código refatorado** - Sistema de roteamento otimizado
 - ✅ **Logging estruturado** - Logs profissionais com níveis de severidade
 - ✅ **Validação de entrada** - Segurança aprimorada

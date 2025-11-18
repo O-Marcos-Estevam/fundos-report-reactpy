@@ -118,8 +118,8 @@ class AppConfig:
 
     # Informações da aplicação
     APP_TITLE = "Relatório Diário de Fundos"
-    APP_VERSION = "7.1"
-    APP_SUBTITLE = "Sistema Modular com ReactPy"
+    APP_VERSION = "7.2"
+    APP_SUBTITLE = "Sistema Modular com ReactPy + SQLite"
 
     # Configurações de servidor
     HOST = "0.0.0.0"

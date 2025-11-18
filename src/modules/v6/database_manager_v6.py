@@ -1,11 +1,11 @@
 """
 DATABASE MANAGER V6 - Gerenciador de Conexões e Queries Otimizadas
 Sistema de pool de conexões, cache e queries otimizadas
+Suporte para Access (pyodbc) e SQLite (sqlite3)
 """
 
-import pyodbc
 import pandas as pd
-from typing import Dict, Any, Optional, List, Tuple
+from typing import Dict, Any, Optional, List, Tuple, Protocol
 from datetime import datetime, timedelta
 import logging
 from contextlib import contextmanager
@@ -15,27 +15,135 @@ from functools import lru_cache
 import hashlib
 import pickle
 import os
+import sys
+from pathlib import Path
+
+# Importações condicionais baseadas no ambiente
+try:
+    import pyodbc
+    HAS_PYODBC = True
+except ImportError:
+    HAS_PYODBC = False
+    logger = logging.getLogger(__name__)
+    logger.info("pyodbc não disponível - usando apenas SQLite")
+
+import sqlite3
 
 logger = logging.getLogger(__name__)
 
 
-class ConnectionPool:
-    """Pool de conexões para melhor performance"""
+# ============================================================================
+# Database Adapters - Suporte para Access (pyodbc) e SQLite (sqlite3)
+# ============================================================================
 
-    def __init__(self, conn_str: str, pool_size: int = 3):
+class DatabaseAdapter(Protocol):
+    """Protocol para adapters de banco de dados"""
+
+    def connect(self, conn_str: str):
+        """Criar conexão"""
+        ...
+
+    def execute_query(self, conn, query: str) -> pd.DataFrame:
+        """Executar query e retornar DataFrame"""
+        ...
+
+    def format_date_param(self, date_str: str) -> str:
+        """Formatar parâmetro de data"""
+        ...
+
+
+class PyODBCAdapter:
+    """Adapter para Microsoft Access via pyodbc"""
+
+    def connect(self, conn_str: str):
+        """Criar conexão pyodbc"""
+        if not HAS_PYODBC:
+            raise ImportError("pyodbc não está disponível. Instale com: pip install pyodbc")
+        return pyodbc.connect(conn_str)
+
+    def execute_query(self, conn, query: str) -> pd.DataFrame:
+        """Executar query via pyodbc"""
+        return pd.read_sql(query, conn)
+
+    def format_date_param(self, date_str: str) -> str:
+        """Formatar data para Access (#MM/DD/YYYY#)"""
+        return f"#{date_str}#"
+
+
+class SQLiteAdapter:
+    """Adapter para SQLite via sqlite3"""
+
+    def connect(self, conn_str: str):
+        """Criar conexão SQLite
+
+        Args:
+            conn_str: Caminho para arquivo .db
+        """
+        return sqlite3.connect(conn_str, check_same_thread=False)
+
+    def execute_query(self, conn, query: str) -> pd.DataFrame:
+        """Executar query via sqlite3"""
+        return pd.read_sql(query, conn)
+
+    def format_date_param(self, date_str: str) -> str:
+        """Formatar data para SQLite ('YYYY-MM-DD')"""
+        # Converter de MM/DD/YYYY para YYYY-MM-DD
+        try:
+            parts = date_str.split('/')
+            if len(parts) == 3:
+                mm, dd, yyyy = parts
+                return f"'{yyyy}-{mm.zfill(2)}-{dd.zfill(2)}'"
+        except:
+            pass
+        return f"'{date_str}'"
+
+
+def detect_database_type(db_path: str) -> str:
+    """
+    Detecta tipo de banco de dados baseado na extensão
+
+    Args:
+        db_path: Caminho para arquivo de banco de dados
+
+    Returns:
+        'access' ou 'sqlite'
+    """
+    path = Path(db_path)
+    ext = path.suffix.lower()
+
+    if ext in ['.accdb', '.mdb']:
+        return 'access'
+    elif ext in ['.db', '.sqlite', '.sqlite3']:
+        return 'sqlite'
+    else:
+        # Default: tentar inferir do caminho
+        if 'sqlite' in db_path.lower() or '.db' in db_path.lower():
+            return 'sqlite'
+        return 'access'
+
+
+# ============================================================================
+# Connection Pool - Adaptado para suportar múltiplos tipos de banco
+# ============================================================================
+
+class ConnectionPool:
+    """Pool de conexões para melhor performance - suporta Access e SQLite"""
+
+    def __init__(self, conn_str: str, pool_size: int = 3, adapter: DatabaseAdapter = None):
         self.conn_str = conn_str
         self.pool_size = pool_size
-        self.connections: List[pyodbc.Connection] = []
+        self.adapter = adapter or PyODBCAdapter()  # Default: Access
+        self.connections: List[Any] = []
         self.available: List[bool] = []
         self.lock = threading.Lock()
         self._initialize_pool()
 
     def _initialize_pool(self):
         """Inicializa o pool de conexões"""
-        logger.info(f"Inicializando pool com {self.pool_size} conexões")
+        logger.info(f"Inicializando pool com {self.pool_size} conexões ({type(self.adapter).__name__})")
         for i in range(self.pool_size):
             try:
-                conn = pyodbc.connect(self.conn_str)
+                conn = self.adapter.connect(self.conn_str)
                 self.connections.append(conn)
                 self.available.append(True)
                 logger.debug(f"Conexão {i+1} criada")
@@ -180,19 +288,29 @@ class QueryCache:
 
 
 class DatabaseManager:
-    """Gerenciador de banco de dados com queries otimizadas"""
+    """Gerenciador de banco de dados com queries otimizadas - suporta Access e SQLite"""
 
     def __init__(self, config: Dict[str, Any]):
         self.config = config
         self.db_path = config['database']['path']
 
+        # Auto-detectar tipo de banco de dados
+        self.db_type = detect_database_type(self.db_path)
+        logger.info(f"Tipo de banco detectado: {self.db_type}")
+
+        # Selecionar adapter apropriado
+        if self.db_type == 'sqlite':
+            self.adapter = SQLiteAdapter()
+            conn_str = self.db_path  # SQLite usa caminho direto
+        else:  # access
+            self.adapter = PyODBCAdapter()
+            # Access usa connection string do ODBC
+            driver = config['database'].get('driver', 'Microsoft Access Driver (*.mdb, *.accdb)')
+            conn_str = f"DRIVER={{{driver}}};DBQ={self.db_path};"
+
         # Connection pool
-        conn_str = (
-            f"DRIVER={{{config['database']['driver']}}};"
-            f"DBQ={self.db_path};"
-        )
         pool_size = config['database'].get('pool_size', 3)
-        self.pool = ConnectionPool(conn_str, pool_size)
+        self.pool = ConnectionPool(conn_str, pool_size, adapter=self.adapter)
 
         # Cache
         cache_enabled = config['cache'].get('enabled', True)
@@ -234,16 +352,18 @@ class DatabaseManager:
         start_time = time.time()
 
         with self.pool.get_connection() as conn:
-            # Substituir parâmetros na query (Access não suporta parametrização padrão)
+            # Substituir parâmetros na query (usar adapter para formatar corretamente)
             final_query = query
             for key, value in params.items():
                 if isinstance(value, str):
-                    # Formato de data do Access
-                    final_query = final_query.replace(f":{key}", f"#{value}#")
+                    # Usar adapter para formatar data corretamente (Access vs SQLite)
+                    formatted_value = self.adapter.format_date_param(value)
+                    final_query = final_query.replace(f":{key}", formatted_value)
                 else:
                     final_query = final_query.replace(f":{key}", str(value))
 
-            df = pd.read_sql(final_query, conn)
+            # Executar query usando adapter
+            df = self.adapter.execute_query(conn, final_query)
 
         elapsed = time.time() - start_time
         logger.info(f"Query executada: {len(df)} registros em {elapsed:.2f}s")

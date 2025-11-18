@@ -104,6 +104,59 @@ def topbar_v2(usuario: str = "Administrador"):
 
 
 @component
+def environment_banner():
+    """Banner indicando modo de operação (DEMO vs PRODUCTION)"""
+    if AppConfig.USE_MOCK_DATA:
+        return html.div(
+            {
+                "class": "alert alert-info",
+                "style": {
+                    "margin": "0",
+                    "borderRadius": "0",
+                    "borderLeft": "none",
+                    "borderRight": "none",
+                    "borderTop": "none",
+                    "background": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    "color": "white",
+                    "padding": "0.75rem 1.5rem",
+                    "textAlign": "center",
+                    "fontWeight": "500",
+                    "fontSize": "0.9rem",
+                    "boxShadow": "0 2px 4px rgba(0,0,0,0.1)"
+                }
+            },
+            "🎭 MODO DEMONSTRAÇÃO - ",
+            html.span({"style": {"fontWeight": "600"}}, "Dados de exemplo"),
+            " • Para executar com dados reais, configure o banco Access localmente"
+        )
+    elif AppConfig.HAS_ACCESS:
+        return html.div(
+            {
+                "class": "alert alert-success",
+                "style": {
+                    "margin": "0",
+                    "borderRadius": "0",
+                    "borderLeft": "none",
+                    "borderRight": "none",
+                    "borderTop": "none",
+                    "background": "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)",
+                    "color": "white",
+                    "padding": "0.75rem 1.5rem",
+                    "textAlign": "center",
+                    "fontWeight": "500",
+                    "fontSize": "0.9rem",
+                    "boxShadow": "0 2px 4px rgba(0,0,0,0.1)"
+                }
+            },
+            "✅ MODO PRODUÇÃO - ",
+            html.span({"style": {"fontWeight": "600"}}, "Banco Access conectado"),
+            " • Pronto para executar relatórios reais"
+        )
+    else:
+        return html.div({"style": {"display": "none"}})
+
+
+@component
 def app_shell_v2(pagina_atual: str, on_change: Callable[[str], None], *children):
     """Estrutura principal do dashboard"""
     return html.div(
@@ -111,6 +164,7 @@ def app_shell_v2(pagina_atual: str, on_change: Callable[[str], None], *children)
         sidebar_v2(pagina_atual, on_change),
         html.div(
             {"class": "app-main"},
+            environment_banner(),  # Banner de modo
             topbar_v2(),
             html.div({"class": "main-content"}, *children)
         )
