@@ -134,8 +134,10 @@ class AppConfig:
     IS_WINDOWS = is_windows()
     HAS_ACCESS = IS_WINDOWS and DB_PATH is not None and Path(DB_PATH).exists() if DB_PATH else False
 
-    # Modo de dados (para deploy em nuvem sem Access)
-    USE_MOCK_DATA = os.environ.get("USE_MOCK_DATA", str(IS_CLOUD).lower()).lower() == "true"
+    # Modo de dados - usa SQLite no cloud, Access no Windows
+    # Forçar USE_MOCK_DATA=false quando temos banco de dados disponível (Access ou SQLite)
+    _default_mock = "false"  # Sempre tentar usar dados reais primeiro
+    USE_MOCK_DATA = os.environ.get("USE_MOCK_DATA", _default_mock).lower() == "true"
 
     # Mensagem de aviso para ambientes sem Access
     ACCESS_WARNING = None if HAS_ACCESS else (
