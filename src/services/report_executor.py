@@ -56,8 +56,9 @@ class ReportExecutor:
         self.ReportClass = None
 
         # Adicionar caminho dos módulos ao sys.path
-        if CAMINHO_MODULO not in sys.path:
-            sys.path.append(CAMINHO_MODULO)
+        if CAMINHO_MODULO and CAMINHO_MODULO not in sys.path:
+            sys.path.insert(0, CAMINHO_MODULO)
+            logger.info(f"Adicionado ao sys.path: {CAMINHO_MODULO}")
 
     def importar_modulo(self) -> Tuple[bool, Optional[str]]:
         """
@@ -66,8 +67,15 @@ class ReportExecutor:
         Returns:
             (sucesso, mensagem_erro)
         """
+        logger.info(f"Tentando importar módulo {self.versao}")
+        logger.info(f"CAMINHO_MODULO: {CAMINHO_MODULO}")
+        logger.info(f"Nomes possíveis: {self.config.nomes_possiveis}")
+
+        erros = []
         for nome_possivel in self.config.nomes_possiveis:
             try:
+                logger.info(f"Tentando importar: {nome_possivel}")
+
                 # Recarregar se já estiver importado
                 if nome_possivel in sys.modules:
                     self.modulo = importlib.reload(sys.modules[nome_possivel])
@@ -77,18 +85,22 @@ class ReportExecutor:
                 # Tentar obter a classe
                 self.ReportClass = getattr(self.modulo, self.config.nome_classe)
 
-                logger.info(f"Módulo {nome_possivel} importado com sucesso")
+                logger.info(f"✓ Módulo {nome_possivel} importado com sucesso")
                 return True, None
 
             except ImportError as e:
-                logger.debug(f"Tentativa de importar {nome_possivel} falhou: {e}")
+                erro_msg = f"ImportError em {nome_possivel}: {str(e)}"
+                logger.warning(erro_msg)
+                erros.append(erro_msg)
                 continue
             except AttributeError as e:
-                logger.error(f"Classe {self.config.nome_classe} não encontrada em {nome_possivel}: {e}")
-                return False, f"Classe {self.config.nome_classe} não encontrada"
+                erro_msg = f"Classe {self.config.nome_classe} não encontrada em {nome_possivel}: {e}"
+                logger.error(erro_msg)
+                erros.append(erro_msg)
+                return False, erro_msg
 
         # Nenhum módulo funcionou
-        erro = f"Não foi possível importar nenhuma variação do módulo {self.versao}"
+        erro = f"Não foi possível importar nenhuma variação do módulo {self.versao}. Erros: {'; '.join(erros)}"
         logger.error(erro)
         return False, erro
 
