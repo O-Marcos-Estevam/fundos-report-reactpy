@@ -500,8 +500,8 @@ def tab_detalhes(fundo: FundoData, data_base: str):
                     {"style": {"padding": "1rem"}},
                     _detail_field("Cotista", fundo.cotista if fundo.cotista else "N/A", "👤")
                 ) if fundo.cotista else info_card_modern(
-                    titulo="Sem informações adicionais",
-                    mensagem="Não há informações adicionais disponíveis para este fundo.",
+                    "Sem informações adicionais",
+                    html.p("Não há informações adicionais disponíveis para este fundo."),
                     tipo="info"
                 )
             )
@@ -523,8 +523,8 @@ def tab_alertas(fundo: FundoData):
             html.div(
                 {"style": {"marginBottom": "1.5rem"}},
                 info_card_modern(
-                    titulo="Sobre os Alertas",
-                    mensagem="Os alertas são gerados automaticamente com base em regras de negócio e limites predefinidos.",
+                    "Sobre os Alertas",
+                    html.p("Os alertas são gerados automaticamente com base em regras de negócio e limites predefinidos."),
                     tipo="info"
                 )
             ),
@@ -817,7 +817,7 @@ def _alerta_card(nivel: str, mensagem: str):
     }
 
     return info_card_modern(
-        titulo=f"{icone_map.get(tipo, '⚠️')} {nivel.upper()}",
-        mensagem=mensagem,
+        f"{icone_map.get(tipo, '⚠️')} {nivel.upper()}",
+        html.p(mensagem),
         tipo=tipo
     )
