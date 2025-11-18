@@ -325,7 +325,14 @@ Consulte [DEVELOPMENT.md](docs/DEVELOPMENT.md) para convenções de código.
 
 ## 📝 Changelog
 
-### Versão 7.2 (Atual) 🚀
+### Versão 7.2.1 (Atual) 🚀
+- ✅ **Modo DEMO funcional** - Execução de relatórios no Railway sem Access
+- ✅ **Simulação realista** - Feedback visual com progresso e logs
+- ✅ **Detecção inteligente** - Sistema auto-detecta ambiente (cloud vs local)
+- ✅ **Validação adaptativa** - Valida ambiente apenas quando necessário
+- ✅ **Documentação Railway** - Guia completo do modo DEMO ([docs/RAILWAY_DEMO_MODE.md](docs/RAILWAY_DEMO_MODE.md))
+
+### Versão 7.2 🚀
 - ✅ **Suporte SQLite** - Deploy em Linux/Cloud sem Access
 - ✅ **Script de migração** - Conversão automática Access → SQLite
 - ✅ **Database adapters** - Arquitetura flexível para múltiplos bancos
